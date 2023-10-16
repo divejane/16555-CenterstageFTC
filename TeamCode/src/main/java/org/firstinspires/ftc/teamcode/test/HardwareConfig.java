@@ -6,7 +6,7 @@ package org.firstinspires.ftc.teamcode.test;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
-public class robothardware {
+public class HardwareConfig {
 
     public Servo             launchServo,
                    leftClawWrist,  rightClawWrist,
