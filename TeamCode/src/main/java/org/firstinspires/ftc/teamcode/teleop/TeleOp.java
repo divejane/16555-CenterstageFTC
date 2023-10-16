@@ -88,6 +88,14 @@ public class TeleOp extends LinearOpMode {
                     if (gamepad2.right_trigger >= .75) {
                         rightClawFinger.setPosition(1);
                     }
+                    if (gameoad2.x) {
+                        leftClawWrist.setPosition(1);
+                        rightClawWrist.setPosition(1);
+                    }
+                    if (gamepad2.a) {
+                        leftClawWrist.setPosition(0);
+                        rightClawWrist.setPosition(0);
+                    }
             }
         }
     }}
