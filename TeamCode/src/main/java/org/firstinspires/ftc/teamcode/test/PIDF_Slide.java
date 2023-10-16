@@ -13,11 +13,8 @@ public class PIDF_Slide extends OpMode {
 
     public static double p = 0, i = 0, d = 0;
     public static double f = 0;
-    double kg = 0;
 
     public static int target = 0;
-
-    private final double ticks_in_degree = 537.7 / 360;
 
     private DcMotorEx slideMotor;
 
@@ -31,10 +28,17 @@ public class PIDF_Slide extends OpMode {
 
     @Override
     public void loop() {
-        controller.setPID(p, i, d);
         int slideHeight = slideMotor.getCurrentPosition();
+        controller.setPID(p, i, d);
         double pid = controller.calculate(slideHeight, target);
+        double ff  = (f * slideHeight) + pid;
 
+        double power = pid + ff;
 
+        slideMotor.setPower(power);
+
+        telemetry.addData("pos ", slideHeight);
+        telemetry.addData("target", target);
+        telemetry.update();
     }
 }
