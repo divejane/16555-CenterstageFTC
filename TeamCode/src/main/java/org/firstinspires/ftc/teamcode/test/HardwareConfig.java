@@ -13,7 +13,7 @@ public class HardwareConfig {
                    leftClawFinger, rightClawFinger;
 
     public DcMotor           slideMotor,
-                   leftFrontMotor, rightFrontMoto,
+                   leftFrontMotor, rightFrontMotor,
                    leftBackMotor,  rightBackMotor,
                    leftHangTower,  rightHangTower;
 
