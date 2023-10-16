@@ -9,24 +9,21 @@ import com.qualcomm.robotcore.hardware.Servo;
 public class teleop extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
+        boolean GP2SchemeToggle = false;
 
-        int GP2SchemeToggle = 1; // Gamepad 2's control scheme toggle to switch between claw and hang control layout
-        int clawWristToggle = 1;
+        Servo launchServo       = hardwareMap.servo.get("launchServo");
+        Servo leftClawWrist     = hardwareMap.servo.get("leftClawWrist");
+        Servo rightClawWrist    = hardwareMap.servo.get("rightClawWrist");
+        Servo leftClawFinger    = hardwareMap.servo.get("leftClawFinger");
+        Servo rightClawFinger   = hardwareMap.servo.get("rightClawFinger");
 
-        // change
-        Servo launchServo     = hardwareMap.servo.get("");
-        Servo leftClawWrist   = hardwareMap.servo.get("");
-        Servo rightClawWrist  = hardwareMap.servo.get("");
-        Servo leftClawFinger  = hardwareMap.servo.get("");
-        Servo rightClawFinger = hardwareMap.servo.get("");
-
-        DcMotor leftFrontMotor  = hardwareMap.dcMotor.get("");
-        DcMotor leftBackMotor   = hardwareMap.dcMotor.get("");
-        DcMotor rightFrontMotor = hardwareMap.dcMotor.get("");
-        DcMotor rightBackMotor  = hardwareMap.dcMotor.get("");
-        DcMotor slideMotor      = hardwareMap.dcMotor.get("");
-        DcMotor leftHangTower   = hardwareMap.dcMotor.get("");
-        DcMotor rightHangTower  = hardwareMap.dcMotor.get("");
+        DcMotor leftFrontMotor  = hardwareMap.dcMotor.get("leftFrontMotor");
+        DcMotor leftBackMotor   = hardwareMap.dcMotor.get("leftBackMotor");
+        DcMotor rightFrontMotor = hardwareMap.dcMotor.get("rightFrontMotor");
+        DcMotor rightBackMotor  = hardwareMap.dcMotor.get("rightBackMotor");
+        DcMotor slideMotor      = hardwareMap.dcMotor.get("slideMotor");
+        DcMotor leftHangTower   = hardwareMap.dcMotor.get("leftHangTower");
+        DcMotor rightHangTower  = hardwareMap.dcMotor.get("rightHangTower");
 
         leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
@@ -36,9 +33,11 @@ public class teleop extends LinearOpMode {
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
-            double forward =  -gamepad1.left_stick_y;
-            double strafe  =  gamepad1.left_stick_x;
-            double turn    =  gamepad1.right_stick_x;
+
+            double GP2Target =  gamepad2.left_stick_y;
+            double forward   = -gamepad1.left_stick_y;
+            double strafe    =  gamepad1.left_stick_x;
+            double turn      =  gamepad1.right_stick_x;
 
             //  Maximum possible power sent to a motor is -1 or 1, but we can sometimes get values from
             //  (forward + strafe + turn) that exceed -1 or 1, so we have to normalize all motors' power
@@ -61,25 +60,35 @@ public class teleop extends LinearOpMode {
                 }
 
             // GAMEPAD 2
-                // Toggle control scheme
+                // Control Scheme Switch
                 if (gamepad2.dpad_up) {
-                    GP2SchemeToggle += 1;
+                    GP2SchemeToggle = true;
+                }
+                if (gamepad2.dpad_left) {
+                    GP2SchemeToggle = false;
                 }
 
                 // Hang Control
-                if (GP2SchemeToggle % 2 == 0) {
-
+                if (GP2SchemeToggle) {
+                    leftHangTower.setPower(GP2Target);
+                    rightHangTower.setPower(-GP2Target);
                 }
                 // Claw Control
-                else {
-                    double target = gamepad2.left_stick_y;
-                    slideMotor.setPower(target);
+                if (!GP2SchemeToggle) {
+                    slideMotor.setPower(GP2Target);
 
-                    if (gamepad2.x) {
-                        clawWristToggle += 1;
+                    if (gamepad2.left_bumper) {
+                        leftClawFinger.setPosition(0);
                     }
-                    
-                }
-
+                    if (gamepad2.right_bumper) {
+                        rightClawFinger.setPosition(0);
+                    }
+                    if (gamepad2.left_trigger >= .75) {
+                        leftClawFinger.setPosition(1);
+                    }
+                    if (gamepad2.right_trigger >= .75) {
+                        rightClawFinger.setPosition(1);
+                    }
+            }
         }
     }}
