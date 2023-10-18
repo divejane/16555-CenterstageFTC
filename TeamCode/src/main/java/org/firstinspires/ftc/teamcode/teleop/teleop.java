@@ -2,11 +2,12 @@ package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp
-public class TeleOp extends LinearOpMode {
+public class teleop extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         boolean GP2SchemeToggle = false;
@@ -17,6 +18,12 @@ public class TeleOp extends LinearOpMode {
         Servo leftClawFinger    = hardwareMap.servo.get("leftClawFinger");
         Servo rightClawFinger   = hardwareMap.servo.get("rightClawFinger");
 
+        leftClawFinger.setDirection(Servo.Direction.REVERSE);
+        rightClawFinger.setDirection(Servo.Direction.REVERSE);
+
+        double droneHold = launchServo.getPosition();
+        launchServo.setPosition(droneHold);
+
         DcMotor leftFrontMotor  = hardwareMap.dcMotor.get("leftFrontMotor");
         DcMotor leftBackMotor   = hardwareMap.dcMotor.get("leftBackMotor");
         DcMotor rightFrontMotor = hardwareMap.dcMotor.get("rightFrontMotor");
@@ -25,6 +32,7 @@ public class TeleOp extends LinearOpMode {
         DcMotor leftHangTower   = hardwareMap.dcMotor.get("leftHangTower");
         DcMotor rightHangTower  = hardwareMap.dcMotor.get("rightHangTower");
 
+        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
 
@@ -35,9 +43,9 @@ public class TeleOp extends LinearOpMode {
         while (opModeIsActive()) {
 
             double GP2Target =  gamepad2.left_stick_y;
-            double forward   = -gamepad1.left_stick_y;
-            double strafe    =  gamepad1.left_stick_x;
-            double turn      =  gamepad1.right_stick_x;
+            double forward    =  gamepad1.left_stick_y;
+            double strafe     =  gamepad1.left_stick_x;
+            double turn       =  -gamepad1.right_stick_x;
 
             //  Maximum possible power sent to a motor is -1 or 1, but we can sometimes get values from
             //  (forward + strafe + turn) that exceed -1 or 1, so we have to normalize all motors' power
@@ -56,7 +64,8 @@ public class TeleOp extends LinearOpMode {
 
             // GAMEPAD 1
                 if (gamepad1.dpad_up) {
-                    launchServo.setPosition(0); // change
+                    launchServo.setDirection(Servo.Direction.REVERSE);
+                    launchServo.setPosition(1);
                 }
 
             // GAMEPAD 2
@@ -74,27 +83,29 @@ public class TeleOp extends LinearOpMode {
                     rightHangTower.setPower(-GP2Target);
                 }
                 // Claw Control
-                if (!GP2SchemeToggle) {
+               if (!GP2SchemeToggle) {
+                    leftHangTower.setPower(0);
+                    rightHangTower.setPower(0);
                     slideMotor.setPower(GP2Target);
 
                     if (gamepad2.left_bumper) {
-                        leftClawFinger.setPosition(0);
+                        leftClawFinger.setPosition(0.5);
                     }
                     if (gamepad2.right_bumper) {
-                        rightClawFinger.setPosition(0);
+                        rightClawFinger.setPosition(0.5);
                     }
                     if (gamepad2.left_trigger >= .75) {
-                        leftClawFinger.setPosition(1);
+                        leftClawFinger.setPosition(0.75);
                     }
                     if (gamepad2.right_trigger >= .75) {
-                        rightClawFinger.setPosition(1);
-                    }
-                    if (gamepad2.x) {
-                        leftClawWrist.setPosition(1);
-                        rightClawWrist.setPosition(1);
+                        rightClawFinger.setPosition(0.75);
                     }
                     if (gamepad2.a) {
-                        leftClawWrist.setPosition(0);
+                        leftClawWrist.setPosition(0.25);
+                        rightClawWrist.setPosition(0.25);
+                    }
+                    if (gamepad2.x) {
+                        leftClawWrist.setPosition(0.5);
                         rightClawWrist.setPosition(0);
                     }
             }
