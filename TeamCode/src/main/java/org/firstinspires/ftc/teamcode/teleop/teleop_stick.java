@@ -1,17 +1,19 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 
 @TeleOp
-public class teleop extends LinearOpMode {
+public class teleop_stick extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         boolean GP2SchemeToggle = false;
 
+        // HARDWARE
         Servo launchServo       = hardwareMap.servo.get("launchServo");
         Servo leftClawWrist     = hardwareMap.servo.get("leftClawWrist");
         Servo rightClawWrist    = hardwareMap.servo.get("rightClawWrist");
@@ -27,7 +29,7 @@ public class teleop extends LinearOpMode {
         DcMotor leftBackMotor   = hardwareMap.dcMotor.get("leftBackMotor");
         DcMotor rightFrontMotor = hardwareMap.dcMotor.get("rightFrontMotor");
         DcMotor rightBackMotor  = hardwareMap.dcMotor.get("rightBackMotor");
-        DcMotor slideMotor      = hardwareMap.dcMotor.get("slideMotor");
+        DcMotorEx slideMotor    = hardwareMap.get(DcMotorEx.class, "slideMotor");
         DcMotor leftHangTower   = hardwareMap.dcMotor.get("leftHangTower");
         DcMotor rightHangTower  = hardwareMap.dcMotor.get("rightHangTower");
 
@@ -35,13 +37,18 @@ public class teleop extends LinearOpMode {
         leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
 
+        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        slideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+
         waitForStart();
 
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
 
-            double GP2Target =  gamepad2.left_stick_y;
+            double GP2Target  =  gamepad2.left_stick_y;
+            int slideHeight   =  slideMotor.getCurrentPosition();
             double forward    =  gamepad1.left_stick_y;
             double strafe     =  gamepad1.left_stick_x;
             double turn       =  -gamepad1.right_stick_x;
@@ -84,10 +91,23 @@ public class teleop extends LinearOpMode {
                 }
                 // Claw Control
                if (!GP2SchemeToggle) {
-                    leftHangTower.setPower(0);
-                    rightHangTower.setPower(0);
-                    slideMotor.setPower(GP2Target);
+                    // Height limiter
+                    if (slideHeight <= 3400 || GP2Target > 0) {
 
+                        // FF
+                        double power = -GP2Target + 0.07;
+                        slideMotor.setPower(power);
+
+                        // Claw Raise
+                        if (slideHeight < 300) {
+                            leftClawWrist.setPosition(0.24);
+                            rightClawWrist.setPosition(0.26);
+                        } else {
+                            leftClawWrist.setPosition(0.5);
+                            rightClawWrist.setPosition(0);
+                        }
+
+                    }
                     if (gamepad2.left_bumper) {
                         leftClawFinger.setPosition(0.48); // 0.47 for vert
                     }
@@ -100,14 +120,6 @@ public class teleop extends LinearOpMode {
                     if (gamepad2.right_trigger >= .75) {
                         rightClawFinger.setPosition(0.89);
                     }
-                    if (gamepad2.a) {
-                        leftClawWrist.setPosition(0.24);
-                        rightClawWrist.setPosition(0.26);
-                    }
-                    if (gamepad2.x) {
-                        leftClawWrist.setPosition(0.5);
-                        rightClawWrist.setPosition(0);
-                    }
-            }
+                }
         }
     }}
