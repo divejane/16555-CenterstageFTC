@@ -5,9 +5,11 @@ import com.acmerobotics.dashboard.telemetry.MultipleTelemetry;
 import com.arcrobotics.ftclib.controller.PIDController;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.DcMotorEx;
+import com.acmerobotics.dashboard.config.Config;
 
-// might need to add config
+@Config
 @TeleOp
 public class PIDF_Slide extends OpMode {
     private PIDController controller;
@@ -25,14 +27,17 @@ public class PIDF_Slide extends OpMode {
         telemetry = new MultipleTelemetry(telemetry, FtcDashboard.getInstance().getTelemetry());
 
         slideMotor = hardwareMap.get(DcMotorEx.class, "slideMotor");
+        slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
+        slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
+        slideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
     }
 
     @Override
     public void loop() {
-        int slideHeight = slideMotor.getCurrentPosition();
         controller.setPID(p, i, d);
+        int slideHeight = slideMotor.getCurrentPosition();
         double pid = controller.calculate(slideHeight, target);
-        double ff  = (f * slideHeight) + pid;
+        double ff  = f + pid;
 
         double power = pid + ff;
 
