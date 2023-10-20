@@ -8,16 +8,13 @@ import com.qualcomm.robotcore.hardware.DcMotorEx;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import javax.crypto.spec.GCMParameterSpec;
+
 @TeleOp
 public class teleoptest extends LinearOpMode {
     @Override
     public void runOpMode() throws InterruptedException {
         boolean GP2SchemeToggle = false;
-
-        // PID CONTROLLER
-        PIDController controller;
-        double p = 0.00, f = 0.07;
-        controller = new PIDController(p, 0, 0);
 
         // HARDWARE
         Servo launchServo       = hardwareMap.servo.get("launchServo");
@@ -53,8 +50,8 @@ public class teleoptest extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            int slideHeight = slideMotor.getCurrentPosition();
-            double GP2Target =  gamepad2.left_stick_y;
+            double GP2Target  = gamepad2.left_stick_y;
+            int slideHeight   = slideMotor.getCurrentPosition();
             double forward    =  gamepad1.left_stick_y;
             double strafe     =  gamepad1.left_stick_x;
             double turn       =  -gamepad1.right_stick_x;
@@ -97,13 +94,15 @@ public class teleoptest extends LinearOpMode {
                 }
                 // Claw Control
                if (!GP2SchemeToggle) {
-                    if (slideHeight <= 3400) {
-                        double pid = controller.calculate(slideHeight, GP2Target);
-                        double ff  = f + pid;
-                        double power = ff + pid;
+                    // Height limiter
+                    if (slideHeight <= 3400 || GP2Target < 0) {
+
+                        // FF
+                        double power = GP2Target + 0.07;
                         slideMotor.setPower(power);
 
-                        if (slideHeight > 300) {
+                        // Claw Raise
+                        if (slideHeight < 300) {
                             leftClawWrist.setPosition(0.24);
                             rightClawWrist.setPosition(0.26);
                         } else {
