@@ -90,23 +90,19 @@ public class teleop_stick extends LinearOpMode {
                     rightHangTower.setPower(-GP2Target);
                 }
                 // Claw Control
-               if (!GP2SchemeToggle) {
-                    // Height limiter
-                    if (slideHeight <= 3400 || GP2Target > 0) {
+                if (!GP2SchemeToggle) {
 
-                        // FF
-                        double power = -GP2Target + 0.07;
-                        slideMotor.setPower(power);
+                    // FF
+                    double power = -GP2Target + 0.07;
+                    slideMotor.setPower(power);
 
-                        // Claw Raise
-                        if (slideHeight < 300) {
-                            leftClawWrist.setPosition(0.24);
-                            rightClawWrist.setPosition(0.26);
-                        } else {
-                            leftClawWrist.setPosition(0.5);
-                            rightClawWrist.setPosition(0);
-                        }
-
+                    // Claw Raise
+                    if (slideHeight < 300) {
+                        leftClawWrist.setPosition(0.24);
+                        rightClawWrist.setPosition(0.26);
+                    } else {
+                        leftClawWrist.setPosition(0.5);
+                        rightClawWrist.setPosition(0);
                     }
                     if (gamepad2.left_bumper) {
                         leftClawFinger.setPosition(0.48); // 0.47 for vert
