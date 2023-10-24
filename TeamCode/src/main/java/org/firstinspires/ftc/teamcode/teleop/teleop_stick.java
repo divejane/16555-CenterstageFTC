@@ -19,6 +19,7 @@ public class teleop_stick extends LinearOpMode {
         Servo rightClawWrist    = hardwareMap.servo.get("rightClawWrist");
         Servo leftClawFinger    = hardwareMap.servo.get("leftClawFinger");
         Servo rightClawFinger   = hardwareMap.servo.get("rightClawFinger");
+        Servo hangHook          = hardwareMap.servo.get("hangHook");
 
         rightClawFinger.setDirection(Servo.Direction.REVERSE);
 
@@ -34,7 +35,6 @@ public class teleop_stick extends LinearOpMode {
         DcMotor rightHangTower  = hardwareMap.dcMotor.get("rightHangTower");
 
         rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
 
         slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
@@ -88,6 +88,13 @@ public class teleop_stick extends LinearOpMode {
                 if (GP2SchemeToggle) {
                     leftHangTower.setPower(GP2Target);
                     rightHangTower.setPower(-GP2Target);
+
+                    if (gamepad2.a) {
+                        hangHook.setPosition(0);
+                    }
+                    if (gamepad2.b) {
+                        hangHook.setPosition(1);
+                    }
                 }
                 // Claw Control
                 if (!GP2SchemeToggle) {
@@ -105,16 +112,19 @@ public class teleop_stick extends LinearOpMode {
                         rightClawWrist.setPosition(0);
                     }
                     if (gamepad2.left_bumper) {
-                        leftClawFinger.setPosition(0.48); // 0.47 for vert
+                        leftClawFinger.setPosition(0.49); // 0.47 for vert
                     }
                     if (gamepad2.left_trigger >= .75) {
-                        leftClawFinger.setPosition(0.46);
+                        leftClawFinger.setPosition(0.47);
                     }
                     if (gamepad2.right_bumper) {
-                        rightClawFinger.setPosition(0.98);
+                        rightClawFinger.setPosition(0.95);
                     }
                     if (gamepad2.right_trigger >= .75) {
-                        rightClawFinger.setPosition(0.89);
+                        rightClawFinger.setPosition(0.86);
+                    }
+                    if (gamepad2.start) {
+                        slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
                     }
                 }
         }
