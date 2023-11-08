@@ -1,20 +1,21 @@
 package org.firstinspires.ftc.teamcode.auto;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 
 @Autonomous
 public class redSideAuto extends LinearOpMode {
+
+    public DcMotor leftFrontMotor, leftBackMotor, rightFrontMotor, rightBackMotor;
+
     @Override
     public void runOpMode() throws InterruptedException {
 
-
-        DcMotor leftFrontMotor  = hardwareMap.dcMotor.get("leftFrontMotor");
-        DcMotor leftBackMotor   = hardwareMap.dcMotor.get("leftBackMotor");
-        DcMotor rightFrontMotor = hardwareMap.dcMotor.get("rightFrontMotor");
-        DcMotor rightBackMotor  = hardwareMap.dcMotor.get("rightBackMotor");
+        leftFrontMotor = hardwareMap.dcMotor.get("leftFrontMotor");
+        leftBackMotor = hardwareMap.dcMotor.get("leftBackMotor");
+        rightFrontMotor = hardwareMap.dcMotor.get("rightFrontMotor");
+        rightBackMotor = hardwareMap.dcMotor.get("rightBackMotor");
 
         waitForStart();
 
@@ -22,11 +23,31 @@ public class redSideAuto extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-
+            chassisMove(0,0,0,0);
 
         }
     }
-    public void encoderSeq (int fL, int bL, int fR, int bR) {
+    public void chassisMove (int fL, int fR, int bL, int bR) {
 
+        leftFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        leftBackMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        rightBackMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
+        leftFrontMotor.setTargetPosition(fL);
+        leftBackMotor.setTargetPosition(bL);
+        rightFrontMotor.setTargetPosition(fR);
+        rightBackMotor.setTargetPosition(bR);
+
+        leftFrontMotor.setPower(0.5);
+        leftBackMotor.setPower(0.5);
+        rightFrontMotor.setPower(0.5);
+        rightBackMotor.setPower(0.5);
+
+        leftFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        leftBackMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        rightBackMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
     }
 }
+
