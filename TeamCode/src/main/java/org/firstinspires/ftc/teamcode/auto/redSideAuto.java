@@ -48,6 +48,14 @@ public class redSideAuto extends LinearOpMode {
         leftBackMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightBackMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-    }
+    
+        while (opModeIsActive() && (BackRight.isBusy() || BackLeft.isBusy() || FrontRight.isBusy() || FrontLeft.isBusy())) {
+        }
+
+        BackRight.setPower(0);
+        BackLeft.setPower(0);
+        FrontRight.setPower(0);
+        FrontLeft.setPower(0);
+        }
 }
 
