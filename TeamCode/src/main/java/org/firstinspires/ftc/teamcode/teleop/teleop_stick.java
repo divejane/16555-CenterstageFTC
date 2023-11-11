@@ -58,10 +58,10 @@ public class teleop_stick extends LinearOpMode {
             //  to keep their speed proportional to each other in the off-chance that this does happen
             double denominator = Math.max(Math.abs(forward) + Math.abs(strafe) + Math.abs(turn), 1);
 
-            double leftFrontPower  = forward + strafe + turn / denominator;
-            double leftBackPower   = forward - strafe + turn / denominator;
-            double rightFrontPower = forward - strafe - turn / denominator;
-            double rightBackPower  = forward + strafe - turn / denominator;
+            double leftFrontPower  = forward - strafe + turn / denominator;
+            double leftBackPower   = forward + strafe + turn / denominator;
+            double rightFrontPower = forward + strafe - turn / denominator;
+            double rightBackPower  = forward - strafe - turn / denominator;
 
             leftFrontMotor.setPower(leftFrontPower);
             leftBackMotor.setPower(leftBackPower);

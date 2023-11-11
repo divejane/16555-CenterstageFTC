@@ -17,27 +17,34 @@ public class blueSideAuto extends LinearOpMode {
         rightFrontMotor = hardwareMap.dcMotor.get("rightFrontMotor");
         rightBackMotor = hardwareMap.dcMotor.get("rightBackMotor");
 
+        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
+        leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
+
         waitForStart();
 
         if (isStopRequested()) return;
 
         while (opModeIsActive()) {
 
-            chassisMove(0,0,0,0);
+            /*
+            just change the number in chassisMove. dont mess with anything else
+             */
+
+            chassisMove(1500);
 
         }
     }
-    public void chassisMove (int fL, int fR, int bL, int bR) {
+    public void chassisMove (int strafe) {
 
         leftFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         leftBackMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBackMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        leftFrontMotor.setTargetPosition(fL);
-        leftBackMotor.setTargetPosition(bL);
-        rightFrontMotor.setTargetPosition(fR);
-        rightBackMotor.setTargetPosition(bR);
+        leftFrontMotor.setTargetPosition(-strafe);
+        leftBackMotor.setTargetPosition(strafe);
+        rightFrontMotor.setTargetPosition(strafe);
+        rightBackMotor.setTargetPosition(-strafe);
 
         leftFrontMotor.setPower(0.5);
         leftBackMotor.setPower(0.5);
@@ -49,14 +56,13 @@ public class blueSideAuto extends LinearOpMode {
         rightFrontMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         rightBackMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
 
-        while (opModeIsActive() && (BackRight.isBusy() || BackLeft.isBusy() || FrontRight.isBusy() || FrontLeft.isBusy())) {
+        while (opModeIsActive() && (rightBackMotor.isBusy() || leftBackMotor.isBusy() || rightFrontMotor.isBusy() || leftFrontMotor.isBusy())) {
         }
 
-        BackRight.setPower(0);
-        BackLeft.setPower(0);
-        FrontRight.setPower(0);
-        FrontLeft.setPower(0);
+        leftFrontMotor.setPower(0);
+        leftBackMotor.setPower(0);
+        rightFrontMotor.setPower(0);
+        rightBackMotor.setPower(0);
         }
     }
-}
 
