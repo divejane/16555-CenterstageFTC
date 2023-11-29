@@ -1,5 +1,8 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
+
+// 3 in 0, 0 in 2, 2 in 1, 1 in 3
+
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
@@ -15,13 +18,8 @@ public class teleop_stick extends LinearOpMode {
 
         // HARDWARE
         Servo launchServo       = hardwareMap.servo.get("launchServo");
-        Servo leftClawWrist     = hardwareMap.servo.get("leftClawWrist");
-        Servo rightClawWrist    = hardwareMap.servo.get("rightClawWrist");
-        Servo leftClawFinger    = hardwareMap.servo.get("leftClawFinger");
-        Servo rightClawFinger   = hardwareMap.servo.get("rightClawFinger");
-        Servo hangHook          = hardwareMap.servo.get("hangHook");
-
-        rightClawFinger.setDirection(Servo.Direction.REVERSE);
+        Servo clawWrist         = hardwareMap.servo.get("clawWrist");
+        Servo clawFinger        = hardwareMap.servo.get("clawFinger");
 
         double droneHold = launchServo.getPosition();
         launchServo.setPosition(droneHold);
@@ -35,7 +33,7 @@ public class teleop_stick extends LinearOpMode {
         DcMotor rightHangTower  = hardwareMap.dcMotor.get("rightHangTower");
 
         rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
-        leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
+        rightBackMotor.setDirection(DcMotor.Direction.REVERSE);
 
         slideMotor.setDirection(DcMotorSimple.Direction.REVERSE);
         slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
@@ -47,7 +45,7 @@ public class teleop_stick extends LinearOpMode {
 
         while (opModeIsActive()) {
 
-            double GP2Target  =  gamepad2.left_stick_y;
+            double GP2Target  =  -gamepad2.left_stick_y;
             int slideHeight   =  slideMotor.getCurrentPosition();
             double forward    =  gamepad1.left_stick_y;
             double strafe     =  gamepad1.left_stick_x;
@@ -86,46 +84,32 @@ public class teleop_stick extends LinearOpMode {
 
                 // Hang Control
                 if (GP2SchemeToggle) {
-                    leftHangTower.setPower(GP2Target);
-                    rightHangTower.setPower(-GP2Target);
-
-                    if (gamepad2.a) {
-                        hangHook.setPosition(0);
-                    }
-                    if (gamepad2.b) {
-                        hangHook.setPosition(1);
-                    }
+                    leftHangTower.setPower(-GP2Target);
+                    rightHangTower.setPower(GP2Target);
                 }
                 // Claw Control
                 if (!GP2SchemeToggle) {
 
                     // FF
-                    double power = -GP2Target + 0.07;
+                    double power = -GP2Target - 0.10;
                     slideMotor.setPower(power);
 
                     // Claw Raise
                     if (slideHeight < 300) {
-                        leftClawWrist.setPosition(0.24);
-                        rightClawWrist.setPosition(0.26);
+                        clawWrist.setPosition(0.24);
                     } else {
-                        leftClawWrist.setPosition(0.5);
-                        rightClawWrist.setPosition(0);
-                    }
-                    if (gamepad2.left_bumper) {
-                        leftClawFinger.setPosition(0.49); // 0.47 for vert
-                    }
-                    if (gamepad2.left_trigger >= .75) {
-                        leftClawFinger.setPosition(0.47);
+                        clawWrist.setPosition(0.5);
                     }
                     if (gamepad2.right_bumper) {
-                        rightClawFinger.setPosition(0.95);
+                        clawFinger.setPosition(0.49); // 0.47 for vert
                     }
-                    if (gamepad2.right_trigger >= .75) {
-                        rightClawFinger.setPosition(0.86);
+                    if (gamepad2.left_bumper) {
+                        clawFinger.setPosition(0);
                     }
                     if (gamepad2.start) {
                         slideMotor.setMode(DcMotorEx.RunMode.STOP_AND_RESET_ENCODER);
-                    }
+                        slideMotor.setMode(DcMotorEx.RunMode.RUN_WITHOUT_ENCODER);
+`                    }
                 }
         }
     }}
