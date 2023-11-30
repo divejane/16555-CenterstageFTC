@@ -1,8 +1,5 @@
 package org.firstinspires.ftc.teamcode.teleop;
 
-
-// 3 in 0, 0 in 2, 2 in 1, 1 in 3
-
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
