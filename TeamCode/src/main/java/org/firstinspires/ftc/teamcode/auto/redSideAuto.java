@@ -30,7 +30,8 @@ public class redSideAuto extends LinearOpMode {
             just change the number in chassisMove. dont mess with anything else
              */
 
-            chassisMove(1500);
+            chassisMove(1750);
+            sleep(1000);
 
         }
     }
@@ -41,9 +42,9 @@ public class redSideAuto extends LinearOpMode {
         rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBackMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        leftFrontMotor.setTargetPosition(strafe);
+        leftFrontMotor.setTargetPosition(-strafe);
         leftBackMotor.setTargetPosition(-strafe);
-        rightFrontMotor.setTargetPosition(-strafe);
+        rightFrontMotor.setTargetPosition(strafe);
         rightBackMotor.setTargetPosition(strafe);
 
         leftFrontMotor.setPower(0.5);
