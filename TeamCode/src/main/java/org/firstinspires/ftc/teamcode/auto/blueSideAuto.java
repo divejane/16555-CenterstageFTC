@@ -30,10 +30,13 @@ public class blueSideAuto extends LinearOpMode {
             just change the number in chassisMove. dont mess with anything else
              */
 
+            chassisMove(300, 300, 300, 300);
+            sleep(1000);
+
             chassisMove(1750, 1750, -1750, -1750);
             sleep(1000);
 
-            chassisMove(300);
+            chassisMove(-300, -300, -300, -300);
             sleep(1000);
         }
     }
