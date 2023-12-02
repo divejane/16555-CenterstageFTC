@@ -30,14 +30,14 @@ public class redSideAuto extends LinearOpMode {
             just change the number in chassisMove. dont mess with anything else
              */
 
-            chassisMove(300, 300, 300, 300);
-            sleep(1000);
+            chassisMove(-750, 750, 750, -750);
+            sleep(500);
 
             chassisMove(-1750, -1750, 1750, 1750);
             sleep(1000);
 
-            chassisMove(-300, -300, -300, -300);
-            sleep(1000);
+            chassisMove(750, -750, -750, 750);
+            sleep(30000);
         }
     }
     public void chassisMove (int fL, int fR, int bL, int bR) {
