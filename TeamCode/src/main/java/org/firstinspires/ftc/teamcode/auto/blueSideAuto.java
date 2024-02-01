@@ -30,14 +30,14 @@ public class blueSideAuto extends LinearOpMode {
             just change the number in chassisMove. dont mess with anything else
              */
 
-            chassisMove(-750, 750, 750, -750);
+            chassisMove(-1000, 1000, 1000, -1000);
             sleep(500);
 
-            chassisMove(1750, 1750, -1750, -1750);
+            chassisMove(-2500, -2500, -2500, -2500);
             sleep(500);
 
             chassisMove(750, -750, -750, 750);
-            sleep(300);
+            sleep(30000);
         }
     }
     public void chassisMove (int fL, int fR, int bL, int bR) {
@@ -46,6 +46,7 @@ public class blueSideAuto extends LinearOpMode {
         leftBackMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightFrontMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
         rightBackMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
 
         leftFrontMotor.setTargetPosition(fL);
         leftBackMotor.setTargetPosition(bL);
