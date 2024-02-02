@@ -21,9 +21,9 @@ public class bluePixelPlace extends LinearOpMode {
                 .createWebcam(hardwareMap.get(WebcamName.class, "Webcam 1"), cameraMonitorViewId);
         BPPipeline detector = new BPPipeline(telemetry);
         camera.setPipeline(detector);
-        camera.openCameraDeviceAsync(
-                () -> camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
-        );
+  //      camera.openCameraDeviceAsync(
+//                () -> camera.startStreaming(320, 240, OpenCvCameraRotation.UPRIGHT)
+    //    );
 
         waitForStart();
         switch (detector.getLocation()) {

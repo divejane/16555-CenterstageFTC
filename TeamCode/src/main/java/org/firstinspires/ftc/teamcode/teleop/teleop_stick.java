@@ -108,7 +108,7 @@ public class teleop_stick extends LinearOpMode {
                     slideLift.setTargetPosition(0);
                     slideLift.setPower(0.75);
                     slideLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-                    slideExtend.setPower(0.25);
+                    slideExtend.setPower(0.3);
                 }
 
             }
