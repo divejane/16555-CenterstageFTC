@@ -4,8 +4,6 @@ package org.firstinspires.ftc.teamcode.teleop;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorEx;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.Servo;
 
 @TeleOp
@@ -27,7 +25,6 @@ public class teleop_stick extends LinearOpMode {
         DcMotor rightFrontMotor = hardwareMap.dcMotor.get("rightFrontMotor");
         DcMotor rightBackMotor  = hardwareMap.dcMotor.get("rightBackMotor");
 
-        rightFrontMotor.setDirection(DcMotor.Direction.REVERSE);
         leftFrontMotor.setDirection(DcMotor.Direction.REVERSE);
 
         DcMotor slideLift       = hardwareMap.dcMotor.get("slideLift");
@@ -44,8 +41,8 @@ public class teleop_stick extends LinearOpMode {
         while (opModeIsActive()) {
 
             double forward    =  gamepad1.left_stick_y;
-            double strafe     =  -gamepad1.left_stick_x;
-            double turn       =  (-gamepad1.right_stick_x)*0.9;
+            double strafe     =  gamepad1.left_stick_x;
+            double turn       =  -gamepad1.right_stick_x*0.9;
 
             //  Maximum possible power sent to a motor is -1 or 1, but we can sometimes get values from
             //  (forward + strafe + turn) that exceed -1 or 1, so we have to normalize all motors' power
