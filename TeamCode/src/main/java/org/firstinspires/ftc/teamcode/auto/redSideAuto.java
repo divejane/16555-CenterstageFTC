@@ -59,6 +59,8 @@ public class redSideAuto extends LinearOpMode {
         leftBackMotor.setDirection(DcMotor.Direction.REVERSE);
 
         DcMotor slideLift       = hardwareMap.dcMotor.get("slideLift");
+        
+        telemetry.addLine("Initializing...");
 
         while (!isStarted() && !isStopRequested()) {
             position = rPropPL.returnPos();
