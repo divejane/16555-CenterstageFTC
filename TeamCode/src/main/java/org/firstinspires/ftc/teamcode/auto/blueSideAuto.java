@@ -60,6 +60,8 @@ public class blueSideAuto extends LinearOpMode {
 
         DcMotor slideLift       = hardwareMap.dcMotor.get("slideLift");
 
+        telemetry.addLine("Initializing...");
+        
         while (!isStarted() && !isStopRequested()) {
             position = bPropPL.returnPos();
             telemetry.addData("PROP FOUND @", position );
