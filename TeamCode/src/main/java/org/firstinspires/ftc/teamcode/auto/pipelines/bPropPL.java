@@ -21,9 +21,9 @@ public class bPropPL extends OpenCvPipeline {
     static final Scalar BLUE = new Scalar(0, 0, 255);
     static final Scalar GREEN = new Scalar(0, 255, 0);
 
-    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(0,150);
-    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(225,125);
-    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(540,150);
+    static final Point REGION1_TOPLEFT_ANCHOR_POINT = new Point(0,175);
+    static final Point REGION2_TOPLEFT_ANCHOR_POINT = new Point(225,150);
+    static final Point REGION3_TOPLEFT_ANCHOR_POINT = new Point(540,175);
     static final int REGION_WIDTH = 100;
     static final int REGION_HEIGHT = 75;
 

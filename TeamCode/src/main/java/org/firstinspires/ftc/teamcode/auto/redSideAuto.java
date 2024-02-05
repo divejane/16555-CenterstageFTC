@@ -85,15 +85,23 @@ public class redSideAuto extends LinearOpMode {
             if (position.toString().equals("LEFT")) {
                 drive(750,750,750,750,0.35);
                 sleep(1000);
-                drive(1350,0,1350,0,0.35);
+                drive(1200,0,1200,0,0.35);
                 sleep(1000);
-                drive(-1350,0,-1350,0,0.35);
+                drive(-1200,0,-1200,0,0.35);
+                sleep(1000);
+                slideLift.setTargetPosition(0);
+                slideLift.setPower(0.75);
+                slideLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 sleep(50000);
             }
             if (position.toString().equals("CENTER")) {
                 drive(1400,1400,1400,1400,0.35);
                 sleep(1000);
                 drive(-500,-500,-500,-500,0.35);
+                sleep(1000);
+                slideLift.setTargetPosition(0);
+                slideLift.setPower(0.75);
+                slideLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 sleep(50000);
             }
             else {
@@ -102,6 +110,10 @@ public class redSideAuto extends LinearOpMode {
                 drive(0,1350,0,1350,0.35);
                 sleep(1000);
                 drive(0,-1350,0,-1350,0.35);
+                sleep(1000);
+                slideLift.setTargetPosition(0);
+                slideLift.setPower(0.75);
+                slideLift.setMode(DcMotor.RunMode.RUN_TO_POSITION);
                 sleep(50000);
             }
 

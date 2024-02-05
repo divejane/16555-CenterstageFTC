@@ -33,6 +33,7 @@ public class teleop_stick extends LinearOpMode {
         slideLift.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
         Servo clawServo         = hardwareMap.servo.get("clawServo");
+        launchServo.setDirection(Servo.Direction.REVERSE);
 
         waitForStart();
 
